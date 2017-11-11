@@ -15,15 +15,16 @@ class Connection {
     public Double weight;
     public Double deltaWeight;
 
-    public Connection() {
-        weight = randomWeight();
+    public Connection(boolean isBiasNeuron) {
+        weight = isBiasNeuron ? 0.0 : randomWeight();
     }
 
     public Double randomWeight() {
         Random rand = new Random();
-        Double num = rand.nextDouble();
+        double standardDeviation = 0.1;
+        double requiredMean = 0;
+        Double num = rand.nextGaussian() * standardDeviation + requiredMean;
 
-        System.out.println(" random weight = " + num);
         return num;
     }
 
@@ -31,12 +32,12 @@ class Connection {
 
 class Neuron {
 
-    public Neuron(int numOp, int myIndex) {
-        System.out.println(" created Neuron ");
+    public Neuron(int numOp, int myIndex, boolean isBiasNeuron) {
+//        System.out.println(" created Neuron ");
 
         // Initialize all connections with random values
         for (int num_connect = 0; num_connect < numOp; num_connect++) {
-            Connection newConnection = new Connection();
+            Connection newConnection = new Connection(isBiasNeuron);
             m_weights.add(newConnection);
         }
         my_Index = myIndex;
@@ -112,6 +113,9 @@ class Neuron {
         }
     }
 
+    public ArrayList<Connection> getWeights() {
+        return m_weights;
+    }
     private static double eta = 0.15;
     private double m_outVal = new Double(0);
     private ArrayList<Connection> m_weights = new ArrayList<Connection>();
@@ -134,16 +138,39 @@ class NeuralNet {
             int numOp = (l_num == arch.size() - 1) ? 0 : arch.get(l_num + 1);
 
             int num_neuron = 0;
+            boolean isBiasNeuron = false;
             //create all neurons including bias
             for (num_neuron = 0; num_neuron <= arch.get(l_num); num_neuron++) {
-                Neuron newNeuron = new Neuron(numOp, num_neuron);
+                //last neuron created is bias neuron
+                isBiasNeuron = num_neuron == arch.get(l_num);
+                Neuron newNeuron = new Neuron(numOp, num_neuron, isBiasNeuron);
                 newLayer.add(newNeuron);
+                System.out.println("");
             }
-            //force bias neuron output to 0
-            newLayer.get(num_neuron - 1).setOutVal(0.0);
+
+            //force bias neuron output to 1
+            newLayer.get(num_neuron - 1).setOutVal(1.0);
             m_layers.add(newLayer);
+
         }
 
+        // Print the numbers of neurons in each layer as a required output for the assignment
+        for (int l_num = 0; l_num < num_layers; l_num++) {
+            System.out.print("  " + arch.get(l_num));
+        }
+        System.out.println("");
+        for (int l_num = 1; l_num < num_layers; l_num++) {
+            ArrayList<Neuron> prevLayer = m_layers.get(l_num - 1);
+            for (int num_neuron = 0; num_neuron < arch.get(l_num); num_neuron++) {
+
+                for (int pre_neuron = 0; pre_neuron <= prevLayer.size() - 1; pre_neuron++) {
+                    System.out.print("  " + prevLayer.get(pre_neuron).getWeights().get(num_neuron).weight);
+                }
+
+                System.out.println("");
+            }
+            System.out.println("");
+        }
     }
 
     public void forwardPass(ArrayList<Double> inputVal) {
@@ -244,11 +271,12 @@ public class NNSolutionOne {
 
         ArrayList<Integer> architecture = new ArrayList<Integer>();
         architecture.add(2);
-        architecture.add(4);
+        architecture.add(3);
         architecture.add(1);
 
         NeuralNet myNet = new NeuralNet(architecture);
 
+        /*
         for (int epoc = 1; epoc < 4000; epoc++) {
 
             System.out.println(" Pass " + epoc);
@@ -344,8 +372,7 @@ public class NNSolutionOne {
 
             myNet.backwordPass(targetVal);
 
-        }
-
+        }*/
     }
 
 }
