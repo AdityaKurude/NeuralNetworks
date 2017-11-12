@@ -1,1 +1,4 @@
 The bias values are initialized with 0, means bias weights are initialized to 0 or bias neuron's output value ?
+
+
+Linear Activation function in the output layer is generally preferred for the linear regression problems where output is continuous values ? However this NN is expected to solve classification of emails prolem which is binary classification problem ?
