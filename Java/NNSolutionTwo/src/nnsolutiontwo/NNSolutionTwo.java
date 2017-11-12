@@ -75,31 +75,31 @@ class Neuron {
         return m_outVal;
     }
 
-    public void calOutLyrGradient(double outVal) {
+    public void finalLayerGradientCalculation(double outVal) {
         double delta = outVal - m_outVal;
         m_gradient = delta * activationFunDerivative(m_outVal);
 
     }
 
-    public void calHiddenLyrGradient(ArrayList<Neuron> nextLayer) {
-        double dow = sumDOW(nextLayer);
+    public void hiddenLayerGradientCalculation(ArrayList<Neuron> nextLayer) {
+        double dow = delta_mul_weight_sum(nextLayer);
         m_gradient = dow * activationFunDerivative(m_outVal);
     }
 
-    private double sumDOW(ArrayList<Neuron> nextLayer) {
+    private double delta_mul_weight_sum(ArrayList<Neuron> nextLayer) {
         double sum = 0.0;
         // sum our contributions of the errors at the nodes we feed
-        for (int n = 0; n < nextLayer.size() - 1; n++) {
-            sum += m_weights.get(n).weight * nextLayer.get(n).m_gradient;
+        for (int num_neuron = 0; num_neuron < nextLayer.size() - 1; num_neuron++) {
+            sum += m_weights.get(num_neuron).weight * nextLayer.get(num_neuron).m_gradient;
         }
 
         return sum;
     }
 
-    public void updateInputWeights(ArrayList<Neuron> prevLayer) {
+    public void weightsUpdate(ArrayList<Neuron> prevLayer) {
         // all neurons including the bias
-        for (int n = 0; n < prevLayer.size(); n++) {
-            Neuron currNeuron = prevLayer.get(n);
+        for (int num_neuron = 0; num_neuron < prevLayer.size(); num_neuron++) {
+            Neuron currNeuron = prevLayer.get(num_neuron);
 //        double oldDeltaWeight = currNeuron.m_weights.get(my_Index).deltaWeight;
 
             double newDeltaWeight
@@ -215,7 +215,7 @@ class NeuralNet {
         // calculate gradient of output layer
         // loop all neurons except the bias neuron
         for (int n = 0; n < outLayer.size() - 1; n++) {
-            outLayer.get(n).calOutLyrGradient(outputVal.get(n));
+            outLayer.get(n).finalLayerGradientCalculation(outputVal.get(n));
         }
 
         // calculate gradient of hidden layers
@@ -225,7 +225,7 @@ class NeuralNet {
 
             // loop all neurons except the bias neuron
             for (int n = 0; n < hiddenLayer.size() - 1; n++) {
-                hiddenLayer.get(n).calHiddenLyrGradient(nextLayer);
+                hiddenLayer.get(n).hiddenLayerGradientCalculation(nextLayer);
             }
         }
 
@@ -236,7 +236,7 @@ class NeuralNet {
 
             // loop all neurons except the bias neuron
             for (int n = 0; n < currentLayer.size() - 1; n++) {
-                currentLayer.get(n).updateInputWeights(prevLayer);
+                currentLayer.get(n).weightsUpdate(prevLayer);
             }
         }
 
@@ -260,7 +260,7 @@ class NeuralNet {
  */
 public class NNSolutionTwo {
 
-public static void showVector(ArrayList<Double> inputVal) {
+    public static void showVector(ArrayList<Double> inputVal) {
         for (int i = 0; i < inputVal.size(); i++) {
             System.out.print(" " + inputVal.get(i));
 
