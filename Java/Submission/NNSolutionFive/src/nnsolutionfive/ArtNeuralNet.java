@@ -16,8 +16,9 @@ import java.util.Scanner;
 public class ArtNeuralNet {
 
     public Double m_batch_error = 0.0;
+    public Double m_batch_valid_error = 0.0;
 
-    public int error_count = 0;
+    public int misPredictCount = 0;
     public static Double m_fraction_test_samples = 0.8;
     private Double m_error;
     private ArrayList<ArrayList<ArtNeuron>> m_layers = new ArrayList<ArrayList<ArtNeuron>>();
@@ -140,6 +141,24 @@ public class ArtNeuralNet {
 
     }
 
+    
+    public void calculateValidationError(ArrayList<Double> outputVal) {
+                // calculate error of network
+        ArrayList<ArtNeuron> outLayer = m_layers.get(m_layers.size() - 1);
+        double valid_error = 0.0;
+                // loop all neurons except the bias neuron
+        for (int n = 0; n < outLayer.size() - 1; n++) {
+            Double delta = outputVal.get(n) - outLayer.get(n).getOutVal();
+
+//            System.out.println(" Expected Out = " + outputVal.get(n) + " calculated val = " + outLayer.get(n).getOutVal());
+            valid_error += delta * delta;
+        }
+
+        valid_error /= outLayer.size() - 1; // get average seuared error
+        valid_error = sqrt(valid_error);    //RMS
+        
+        m_batch_valid_error += valid_error;
+    }
     public void backwordPass(ArrayList<Double> outputVal) {
         // calculate error of network
         ArrayList<ArtNeuron> outLayer = m_layers.get(m_layers.size() - 1);
@@ -296,8 +315,10 @@ public class ArtNeuralNet {
         int bin_out = outputValues.get(0) > 0.9 ? 1 : 0;
 
         if (bin_out != targetValues.get(0)) {
-            error_count++;
+            misPredictCount++;
         }
+        
+        calculateValidationError(targetValues);
 
         if (NNSolutionFive.debugMode) {
             System.out.print(" Input :: ");
