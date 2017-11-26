@@ -12,7 +12,8 @@ import java.util.Random;
  * @author ubuntu-admin
  */
 public class NeuronConnect {
-
+    
+    public Double deltaWeight = 0.0;
     public Double weight;
 
     public NeuronConnect(boolean isBiasNeuron) {

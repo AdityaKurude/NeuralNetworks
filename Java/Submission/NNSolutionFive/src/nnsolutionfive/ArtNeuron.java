@@ -83,12 +83,13 @@ public class ArtNeuron {
         for (int num_neuron = 0; num_neuron < prevLayer.size(); num_neuron++) {
             ArtNeuron currNeuron = prevLayer.get(num_neuron);
 
-            double newDeltaWeight
-                    = // Individual input, magnified by the gradient and train rate
-                    NNSolutionFive.eta
-                    * currNeuron.getOutVal()
-                    * m_gradient;
+            double oldDeltaWeight = currNeuron.m_weights.get(my_Index).deltaWeight;
 
+            double newDeltaWeight =  ((oldDeltaWeight * 0.15)
+                    // Also add a momentum = a fraction of the previous delta weight
+                    + (NNSolutionFive.eta * currNeuron.getOutVal() * m_gradient));
+
+            currNeuron.m_weights.get(my_Index).deltaWeight = newDeltaWeight;
             currNeuron.m_weights.get(my_Index).weight += newDeltaWeight;
 
         }
