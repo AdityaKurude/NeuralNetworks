@@ -37,7 +37,7 @@ public class ArtNeuron {
             sum += (val * prevLayer.get(n).m_weights.get(my_Index).weight);
         }
         // If it is final layer then apply unit linearity otherwise for all other layers apply activation function
-        m_outVal = isFinalLayer ? sum : activationFun(sum);
+        m_outVal = activationFun(sum);
     }
 
     static double activationFun(double input) {
@@ -69,6 +69,24 @@ public class ArtNeuron {
         }
 
         return sum;
+    }
+    
+        public void weightsUpdate(ArrayList<ArtNeuron> prevLayer) {
+        // all neurons including the bias
+        for (int num_neuron = 0; num_neuron < prevLayer.size(); num_neuron++) {
+            ArtNeuron currNeuron = prevLayer.get(num_neuron);
+//        double oldDeltaWeight = currNeuron.m_weights.get(my_Index).deltaWeight;
+
+            double newDeltaWeight
+                    = // Individual input, magnified by the gradient and train rate
+                    0.015
+                    * currNeuron.getOutVal()
+                    * m_gradient;
+
+            currNeuron.m_weights.get(my_Index).deltaWeight = newDeltaWeight;
+            currNeuron.m_weights.get(my_Index).weight += newDeltaWeight;
+
+        }
     }
 
     public void setOutVal(double outVal) {

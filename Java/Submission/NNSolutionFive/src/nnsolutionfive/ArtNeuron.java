@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nnsolutionfour;
+package nnsolutionfive;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ public class ArtNeuron {
 
     public ArtNeuron(int numOp, int myIndex, boolean isBiasNeuron) {
 
-        if (NNSolutionFour.debugMode) {
+        if (NNSolutionFive.debugMode) {
             System.out.println(" created ArtNeuron ");
         }
         // Initialize all connections with random values
@@ -45,6 +45,7 @@ public class ArtNeuron {
             sum += (val * prevLayer.get(n).m_weights.get(my_Index).weight);
         }
         // If it is final layer then apply unit linearity otherwise for all other layers apply activation function
+//        m_outVal = isFinalLayer ? sum : activationFun(sum);
         m_outVal = activationFun(sum);
     }
 
@@ -84,7 +85,7 @@ public class ArtNeuron {
 
             double newDeltaWeight
                     = // Individual input, magnified by the gradient and train rate
-                    NNSolutionFour.eta
+                    NNSolutionFive.eta
                     * currNeuron.getOutVal()
                     * m_gradient;
 

@@ -37,7 +37,7 @@ public class ArtNeuron {
             sum += (val * prevLayer.get(n).m_weights.get(my_Index).weight);
         }
         // If it is final layer then apply unit linearity otherwise for all other layers apply activation function
-        m_outVal = isFinalLayer ? sum : activationFun(sum);
+        m_outVal = activationFun(sum);
     }
 
     static double activationFun(double input) {
