@@ -53,6 +53,7 @@ public class ArtNeuralNet {
         System.out.print(arch.get(l_num));
         System.out.println("");
         
+        //Print the weights of the connections between neurons
         for (l_num = 1; l_num < num_layers; l_num++) {
             ArrayList<ArtNeuron> prevLayer = m_layers.get(l_num - 1);
             int num_neuron = 0;

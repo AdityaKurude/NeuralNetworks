@@ -27,7 +27,7 @@ public class ArtNeuralNet {
             // create a new nerons layer
             ArrayList<ArtNeuron> newLayer = new ArrayList<ArtNeuron>();
 
-            //if op layer then there are no further connections.
+            //if its output (op) layer then there are no further connections.
             int numOp = (l_num == arch.size() - 1) ? 0 : arch.get(l_num + 1);
 
             int num_neuron = 0;
@@ -80,29 +80,29 @@ public class ArtNeuralNet {
                     }
                 }
             }
+        }
 
-            // Print the weight values to verify all neuron weights are initialized as specified by the user
-            if (NNSolutionThree.debugMode) {
+        // Print the weight values to verify all neuron weights are initialized as specified by the user
+        if (NNSolutionThree.debugMode) {
 
-                for (l_num = 1; l_num < num_layers; l_num++) {
-                    ArrayList<ArtNeuron> prevLayer = m_layers.get(l_num - 1);
-                    int num_neuron = 0;
-                    int pre_neuron = 0;
+            for (l_num = 1; l_num < num_layers; l_num++) {
+                ArrayList<ArtNeuron> prevLayer = m_layers.get(l_num - 1);
+                int num_neuron = 0;
+                int pre_neuron = 0;
 
-                    for (num_neuron = 0; num_neuron < arch.get(l_num); num_neuron++) {
+                for (num_neuron = 0; num_neuron < arch.get(l_num); num_neuron++) {
 
-                        for (pre_neuron = 0; pre_neuron <= prevLayer.size() - 2; pre_neuron++) {
-                            System.out.print(prevLayer.get(pre_neuron).getWeights().get(num_neuron).weight + ",");
-                        }
-                        System.out.print(prevLayer.get(pre_neuron).getWeights().get(num_neuron).weight);
-
-                        System.out.println("");
+                    for (pre_neuron = 0; pre_neuron <= prevLayer.size() - 2; pre_neuron++) {
+                        System.out.print(prevLayer.get(pre_neuron).getWeights().get(num_neuron).weight + ",");
                     }
-                }
+                    System.out.print(prevLayer.get(pre_neuron).getWeights().get(num_neuron).weight);
 
+                    System.out.println("");
+                }
             }
 
         }
+
     }
 
     public void forwardPass(ArrayList<Double> inputVal) {
@@ -157,13 +157,27 @@ public class ArtNeuralNet {
                 hiddenLayer.get(n).hiddenLayerGradientCalculation(nextLayer);
             }
         }
-        
+
+        // update weights according to the gradient
+        for (int lyr_num = m_layers.size() - 1; lyr_num > 0; --lyr_num) {
+            ArrayList<ArtNeuron> currentLayer = m_layers.get(lyr_num);
+            ArrayList<ArtNeuron> prevLayer = m_layers.get(lyr_num - 1);
+
+            // loop all neurons except the bias neuron
+            for (int n = 0; n < currentLayer.size() - 1; n++) {
+                currentLayer.get(n).weightsUpdate(prevLayer);
+            }
+        }
+
         //Print the partial derivatives of the neurons from last to first layer.
         for (int lyr_num = m_layers.size() - 1; lyr_num > 0; --lyr_num) {
             ArrayList<ArtNeuron> currentLayer = m_layers.get(lyr_num);
 
+            if (NNSolutionThree.debugMode) {
+                System.out.println(" Printing Gradients for layer = " + lyr_num);
+            }
             int n = 0;
-            // loop all neurons except the bias neuron
+            // loop all neurons including the bias neuron
             for (n = 0; n < currentLayer.size() - 1; n++) {
                 System.out.print(currentLayer.get(n).getGradient() + ",");
             }
@@ -172,7 +186,6 @@ public class ArtNeuralNet {
 
     }
 
-    
     public void getResult(ArrayList<Double> result) {
         result.clear();
         int numLayers = m_layers.size() - 1;

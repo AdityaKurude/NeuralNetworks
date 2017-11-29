@@ -14,8 +14,8 @@ import java.util.Scanner;
  */
 public class NNSolutionThree {
 
-    public static final boolean debugMode = false;
-    public static final boolean isWeightInput = false;
+    public static final boolean debugMode = true;
+    public static final boolean isWeightInput = true;
 
     /* or false :-) */
     /**
@@ -66,22 +66,31 @@ public class NNSolutionThree {
                 inputVal.add(input_val);
             }
 
-            myNet.forwardPass(inputVal);
+            System.out.println(" Enter number of epoc ");
+            String str_epoc = scanner.nextLine();
 
-            ArrayList<Double> outputVal = new ArrayList<Double>();
+            int epoc = Integer.parseInt(str_epoc);
 
-            myNet.getResult(outputVal);
-            
-            //output value is not displayed for this part of the solution
-            //myNet.showVector(outputVal);
+            for (int n_ep = 0; n_ep < epoc; n_ep++) {
 
-            ArrayList<Double> targetVal = new ArrayList<Double>();
-            
-            //take the last value from input vector as target value
-            Double input_val = Double.parseDouble(arr_inputVal[arr_inputVal.length - 1]);
-            targetVal.add(input_val);
-            
-            myNet.backwordPass(targetVal);
+                myNet.forwardPass(inputVal);
+
+                ArrayList<Double> outputVal = new ArrayList<Double>();
+
+                myNet.getResult(outputVal);
+
+                //output value is not displayed for this part of the solution
+                //myNet.showVector(outputVal);
+                ArrayList<Double> targetVal = new ArrayList<Double>();
+
+                //take the last value from input vector as target value
+                Double input_val = Double.parseDouble(arr_inputVal[arr_inputVal.length - 1]);
+                targetVal.add(input_val);
+
+                myNet.backwordPass(targetVal);
+
+            }
+
         }
     }
 

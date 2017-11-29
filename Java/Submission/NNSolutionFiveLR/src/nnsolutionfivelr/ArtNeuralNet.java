@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nnsolutionfive;
+package nnsolutionfivelr;
 
 import static java.lang.Math.sqrt;
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class ArtNeuralNet {
 //            }
 //            System.out.println("");
 //        }
-        if (NNSolutionFive.isWeightInput) {
+        if (NNSolutionFiveLR.isWeightInput) {
             //Accept weights for individual neurons in the specific layers
             for (int l_num = 1; l_num < num_layers; l_num++) {
                 ArrayList<ArtNeuron> prevLayer = m_layers.get(l_num - 1);
@@ -85,7 +85,7 @@ public class ArtNeuralNet {
 
                     String[] weight_array = str_weights.split(",", -1);
 
-                    if (NNSolutionFive.debugMode) {
+                    if (NNSolutionFiveLR.debugMode) {
                         System.out.println("Your weights for layer are " + str_weights);
                     }
                     for (pre_neuron = 0; pre_neuron <= prevLayer.size() - 2; pre_neuron++) {
@@ -97,7 +97,7 @@ public class ArtNeuralNet {
             }
 
             // Print the weight values to verify all neuron weights are initialized as specified by the user
-            if (NNSolutionFive.debugMode) {
+            if (NNSolutionFiveLR.debugMode) {
 
                 for (int l_num = 1; l_num < num_layers; l_num++) {
                     ArrayList<ArtNeuron> prevLayer = m_layers.get(l_num - 1);
@@ -199,7 +199,7 @@ public class ArtNeuralNet {
 //        for (int lyr_num = m_layers.size() - 1; lyr_num > 0; --lyr_num) {
 //            ArrayList<ArtNeuron> currentLayer = m_layers.get(lyr_num);
 //
-////            if (NNSolutionFive.debugMode) {
+////            if (NNSolutionFiveLR.debugMode) {
 //                System.out.println(" Printing gradients for layer = " + lyr_num);
 ////            }
 //
@@ -247,7 +247,7 @@ public class ArtNeuralNet {
     public void printRequiredResults() {
         System.out.println(" RMS batch Error = " + m_batch_error);
 
-        if (NNSolutionFive.debugMode) {
+        if (NNSolutionFiveLR.debugMode) {
             System.out.println(" Displaying architecture : ");
 
             //print architecture
@@ -290,7 +290,7 @@ public class ArtNeuralNet {
         backwordPass(targetValues);
 //        System.out.println("");
 
-        if (NNSolutionFive.debugMode) {
+        if (NNSolutionFiveLR.debugMode) {
             System.out.print(" Input :: ");
             showVector(inputValues);
 
@@ -320,7 +320,7 @@ public class ArtNeuralNet {
         
         calculateValidationError(targetValues);
 
-        if (NNSolutionFive.debugMode) {
+        if (NNSolutionFiveLR.debugMode) {
             System.out.print(" Input :: ");
             showVector(inputValues);
 

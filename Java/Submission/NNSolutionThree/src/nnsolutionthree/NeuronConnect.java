@@ -13,7 +13,8 @@ import java.util.Random;
  */
 public class NeuronConnect {
 
-    public Double weight;
+        public Double deltaWeight;
+public Double weight;
 
     public NeuronConnect(boolean isBiasNeuron) {
         //If the neuron is bias neuron then initialize its weight to zero.

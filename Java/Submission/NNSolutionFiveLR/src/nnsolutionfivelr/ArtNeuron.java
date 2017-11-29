@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nnsolutionfive;
+package nnsolutionfivelr;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ public class ArtNeuron {
 
     public ArtNeuron(int numOp, int myIndex, boolean isBiasNeuron) {
 
-        if (NNSolutionFive.debugMode) {
+        if (NNSolutionFiveLR.debugMode) {
             System.out.println(" created ArtNeuron ");
         }
         // Initialize all connections with random values
@@ -87,7 +87,7 @@ public class ArtNeuron {
 
             double newDeltaWeight =  ((oldDeltaWeight * 0.15)
                     // Also add a momentum = a fraction of the previous delta weight
-                    + (NNSolutionFive.eta * currNeuron.getOutVal() * m_gradient));
+                    + (NNSolutionFiveLR.eta * currNeuron.getOutVal() * m_gradient));
 
             currNeuron.m_weights.get(my_Index).deltaWeight = newDeltaWeight;
             currNeuron.m_weights.get(my_Index).weight += newDeltaWeight;

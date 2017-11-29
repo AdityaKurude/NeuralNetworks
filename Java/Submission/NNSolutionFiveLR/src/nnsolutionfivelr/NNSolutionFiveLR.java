@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nnsolutionfive;
+package nnsolutionfivelr;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -17,7 +17,8 @@ import java.util.Scanner;
  *
  * @author ubuntu-admin
  */
-public class NNSolutionFive {
+public class NNSolutionFiveLR {
+
 
     public static final boolean debugMode = false;
     public static final boolean isWeightInput = false;
@@ -38,6 +39,10 @@ public class NNSolutionFive {
 //                System.out.println("Enter base path : ");
 //        Scanner scanner = new Scanner(System.in);
         String str_base_path = args[0];//scanner.nextLine();
+
+        String configFile = str_base_path + "config_spambase.csv";
+
+        System.out.println(" config file = " + configFile);
 
         BufferedReader br_config = null;
         String line_config = args[2];
@@ -141,11 +146,12 @@ public class NNSolutionFive {
 
             for (int epoc = 0; epoc < epocs; epoc++) {
 
+                eta = eta - (1 / (1 + (epoc)));
                 //Write a epoc to the CSV file
                 fileWriter.append(Integer.toString(epoc));
                 fileWriter.append(COMMA_DELIMITER);
 
-                System.out.println(" training epoc number : " + epoc);
+                System.out.println(" training epoc number : " + epoc + " eta = " + eta);
                 myNet.m_batch_error = 0.0;
 
                 for (int n_trSample = 0; n_trSample < trainingSamples; n_trSample++) {
